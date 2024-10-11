@@ -86,6 +86,7 @@ Read correct lesson meta from esciencecenter-digital-skills/workshop-metadata
 {% capture lesson_meta %}https://raw.githubusercontent.com/esciencecenter-digital-skills/workshop-metadata/main/{{info.curriculum}}{% endcapture %}
 {% endif %}
 
+
 {% comment %}
 Check DC curriculum
 {% endcomment %}
@@ -143,10 +144,11 @@ workshop is only open to people from a particular institution.
 {% elsif info.carpentry == "lc" %}
 {% include lc/who.html %}
 {% elsif info.carpentry == "ds" %}
-<div style="display: flex"><div>
-     <strong>Who:&nbsp;</strong>
-     </div>
-     <div markdown=1>{% remote_include {{lesson_meta}}/who.md %}</div></div>
+<div style="display: flex">
+<div><strong>Who:&nbsp;</strong></div>
+<div markdown=1> {% remote_include {{lesson_meta}}/who.md %} 
+</div>
+</div>
 {% endif %}
 
 {% comment %}
@@ -218,7 +220,6 @@ Modify the block below if there are any special requirements.
     Participants must have access to a computer with a
     Mac, Linux, or Windows operating system (not a tablet, Chromebook, etc.) that they have administrative privileges on.
   {% endif %}
-  They should have a few specific software packages installed (listed <a href="#setup">below</a>).
 </p>
 
 {% comment %}
@@ -387,103 +388,8 @@ of code below the Schedule `<h2>` header below with
 
 <h2 id="schedule">Schedule</h2>
 
-{% if info.carpentry == "swc" %}
-{% include swc/schedule.html %}
-{% elsif info.carpentry == "dc" %}
-{% include dc/schedule.html %}
-{% elsif info.carpentry == "lc" %}
-{% include lc/schedule.html %}
-{% elsif info.carpentry == "ds" %}
-{% remote_include {{lesson_meta}}/schedule.md %}
-{% elsif info.carpentry == "pilot" %}
-The lesson taught in this workshop is being piloted and a precise schedule is yet to be established. The workshop will include regular breaks. If you would like to know the timing of these breaks in advance, please [contact the workshop organisers](#contact). For a list of lesson sections and estimated timings, [visit the lesson homepage]({{ site.lesson_site }}).
-{% comment %}
-Edit/replace the text above if you want to include a schedule table.
-See the contents of the _includes/custom-schedule.html file for an example of
-how one of these schedule tables is constructed.
-{% endcomment %}
-{% endif %}
+{% include custom-schedule.html %}
 
 <hr/>
 
-
-{% comment %}
-SETUP
-
-Delete irrelevant sections from the setup instructions.  Each
-section is inside a 'div' without any classes to make the beginning
-and end easier to find.
-
-This is the other place where people frequently make mistakes, so
-please preview your site before committing, and make sure to run
-'tools/check' as well.
-{% endcomment %}
-
-<h2 id="setup">Setup</h2>
-
-<p>
-  To participate in
-  {% if info.carpentry == "swc" %}
-  a Software Carpentry
-  {% elsif info.carpentry == "dc" %}
-  a Data Carpentry
-  {% elsif info.carpentry == "lc" %}
-  a Library Carpentry
-  {% else %}
-  this
-  {% endif %}
-  workshop,
-  you will need access to software as described below.
-  In addition, you will need an up-to-date web browser.
-</p>
-<p>
-  We maintain a list of common issues that occur during installation as a reference for instructors
-  that may be useful on the
-  <a href = "{{site.swc_github}}/workshop-template/wiki/Configuration-Problems-and-Solutions">Configuration Problems and Solutions wiki page</a>.
-</p>
-
-{% comment %}
-These are the installation instructions for the tools used
-during the workshop.
-{% endcomment %}
-
-<h3 id="software-setup">Software setup</h3>
-
-{% if info.carpentry == "swc" %}
-{% include swc/setup.html %}
-{% elsif info.carpentry == "dc" %}
-{% include dc/setup.html %}
-{% elsif info.carpentry == "lc" %}
-{% include lc/setup.html %}
-{% elsif info.carpentry == "ds" %}
-{% capture content %}
-{% remote_include {{lesson_meta}}/setup.md %}
-{% endcapture %}
-{% if content contains "/setup.md" %}
-  {% capture setup %}
-  {% remote_include https://raw.githubusercontent.com/{{content | strip}} %}
-  {% endcapture %}
-  {{ setup | split: "---" | last}}
-{% else %}
-  {{ content }}
-{% endif %}
-{% elsif info.carpentry == "pilot" %}
-Please check the "Setup" page of
-[the lesson site]({{ site.lesson_site }}) for instructions to follow
-to obtain the software and data you will need to follow the lesson.
-{% endif %}
-
-{% comment %}
-For online workshops, the section below provides:
-- installation instructions for the Zoom client
-- recommendations for setting up Learners' workspace so they can follow along
-  the instructions and the videoconferencing
-
-If you do not use Zoom for your online workshop, edit the file
-`_includes/install_instructions/videoconferencing.html`
-to include the relevant installation instrucctions.
-{% endcomment %}
-{% if online != "false" %}
-{% include install_instructions/videoconferencing.html %}
-{% endif %}
 
